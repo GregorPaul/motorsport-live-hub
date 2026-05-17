@@ -134,9 +134,20 @@ function connectLiveTiming(raceState) {
               grello.LLTS || "RUN",
 
             flag:
-              grello.GAP === "DNF"
-                ? "Out of Race"
-                : "Running",
+
+  Number(grello.LAPS || 0) < 30
+
+    ? "OUT"
+
+    : (
+
+        grello.LLTS === "0"
+
+          ? "OUT"
+
+          : "RUNNING"
+
+      ),
 
             gap:
               grello.GAP || "-",
