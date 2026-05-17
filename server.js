@@ -5,6 +5,22 @@ const timingService = require("./services/timingService")
 const weatherService = require("./services/weatherService")
 const shortenTeamName = require("./services/teamShortener")
 
+const raceHub =
+
+  require(
+
+    "./services/timing/raceHub"
+
+  )
+
+const vehicleTracker =
+
+  require(
+
+    "./services/vehicleTracker"
+
+  )
+
 const app = express()
 
 app.use(cors())
