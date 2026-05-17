@@ -52,7 +52,12 @@ let raceState = {
 
   series: "24H Nürburgring",
   session: "Race",
+  mode: "live",
 
+nextEvent: null,
+
+countdown: null,
+  
   leader:
     "#3 Mercedes-AMG Team Verstappen Racing",
 
@@ -259,6 +264,13 @@ setInterval(
   1000 * 60 * 3
 
 )
+
+setInterval(
+  updateLoop,
+  30000
+)
+
+updateLoop()
 
 app.listen(PORT, () => {
 
