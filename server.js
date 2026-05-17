@@ -1,3 +1,10 @@
+const {
+  connectLiveTiming
+} = require(
+  "./services/timing/liveTimingSocket"
+)
+``
+
 const express = require("express")
 const cors = require("cors")
 
