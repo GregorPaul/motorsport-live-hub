@@ -240,6 +240,16 @@ async function updateLoop() {
 
 connectLiveTiming(raceState)
 
+updateLoop()
+
+setInterval(
+
+  updateLoop,
+
+  1000 * 60 * 3
+
+)
+
 app.listen(PORT, () => {
 
   console.log(
