@@ -9,16 +9,5 @@
       "911",
       "Grello"
     ]
-  },
-  {
-    "name": "GetSpeed AMG",
-    "carNumber": "3",
-    "manufacturer": "Mercedes-AMG",
-    "team": "GetSpeed",
-    "keywords": [
-      "Verstappen",
-      "AMG",
-      "GetSpeed"
-    ]
   }
 ]
