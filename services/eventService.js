@@ -21,8 +21,17 @@ function getEventState() {
     const end =
       new Date(event.end)
 
+    // LIVE beginnt
+    // 1 Stunde vor Event
+
+    const liveStart =
+      new Date(
+        start.getTime() -
+        60 * 60 * 1000
+      )
+
     if (
-      now >= start &&
+      now >= liveStart &&
       now <= end
     ) {
 
@@ -30,7 +39,7 @@ function getEventState() {
       break
     }
   }
-
+  
   // =====================================
   // FIND NEXT EVENT
   // =====================================
