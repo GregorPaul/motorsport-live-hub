@@ -27,6 +27,16 @@ const vehicleTracker =
 
   )
 
+const {
+
+  getEventState
+
+} = require(
+
+  "./services/eventService"
+
+)
+
 const app = express()
 
 app.use(cors())
