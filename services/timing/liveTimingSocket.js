@@ -54,6 +54,44 @@ function connectLiveTiming(raceState) {
         const leaderboard =
           data.RESULT
 
+       raceState.top3 =
+
+  leaderboard
+
+    .slice(0, 3)
+
+    .map(car => ({
+
+      position:
+
+        car.POSITION,
+
+      number:
+
+        car.STNR,
+
+      team:
+
+        car.TEAM,
+
+      shortTeam:
+
+        shortenTeamName(
+
+          car.TEAM || ""
+
+        ),
+
+      laps:
+
+        car.LAPS,
+
+      gap:
+
+        car.GAP
+
+    }))
+        
         // Leader
         const leader =
           leaderboard[0]
