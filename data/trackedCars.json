@@ -1,0 +1,24 @@
+[
+  {
+    "name": "Grello",
+    "carNumber": "911",
+    "manufacturer": "Porsche",
+    "team": "Manthey EMA",
+    "keywords": [
+      "Manthey",
+      "911",
+      "Grello"
+    ]
+  },
+  {
+    "name": "GetSpeed AMG",
+    "carNumber": "3",
+    "manufacturer": "Mercedes-AMG",
+    "team": "GetSpeed",
+    "keywords": [
+      "Verstappen",
+      "AMG",
+      "GetSpeed"
+    ]
+  }
+]
