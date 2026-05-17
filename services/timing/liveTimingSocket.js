@@ -1,3 +1,8 @@
+const shortenTeamName =
+
+  require("../teamShortener")
+
+
 const WebSocket = require("ws")
 
 let socket = null
