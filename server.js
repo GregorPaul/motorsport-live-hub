@@ -7,34 +7,29 @@ const {
 const express = require("express")
 const cors = require("cors")
 
-const timingService = require("./services/timingService")
-const weatherService = require("./services/weatherService")
-const shortenTeamName = require("./services/teamShortener")
+const timingService =
+  require("./services/timingService")
+
+const weatherService =
+  require("./services/weatherService")
+
+const shortenTeamName =
+  require("./services/teamShortener")
 
 const raceHub =
-
   require(
-
     "./services/timing/raceHub"
-
   )
 
 const vehicleTracker =
-
   require(
-
     "./services/vehicleTracker"
-
   )
 
 const {
-
   getEventState
-
 } = require(
-
   "./services/eventService"
-
 )
 
 const app = express()
@@ -42,7 +37,8 @@ const app = express()
 app.use(cors())
 app.use(express.json())
 
-const PORT = process.env.PORT || 3000
+const PORT =
+  process.env.PORT || 3000
 
 // ==========================================
 // MEMORY STORE
@@ -50,14 +46,21 @@ const PORT = process.env.PORT || 3000
 
 let raceState = {
 
-  series: "24H Nürburgring",
-  session: "Race",
-  mode: "live",
+  series:
+    "24H Nürburgring",
 
-nextEvent: null,
+  session:
+    "Race",
 
-countdown: null,
-  
+  mode:
+    "live",
+
+  nextEvent:
+    null,
+
+  countdown:
+    null,
+
   leader:
     "#3 Mercedes-AMG Team Verstappen Racing",
 
@@ -66,29 +69,39 @@ countdown: null,
 
   grello: {
 
-    car: "#911 Manthey EMA Grello",
+    car:
+      "#911 Manthey EMA Grello",
 
-    position: "DNF",
+    position:
+      "DNF",
 
-    classPosition: "P4 SP9",
+    classPosition:
+      "P4 SP9",
 
-    lap: 24,
+    lap:
+      24,
 
-    status: "OUT",
+    status:
+      "OUT",
 
-    flag: "Out of Race",
+    flag:
+      "Out of Race",
 
-    gap: "-",
+    gap:
+      "-",
 
     lastUpdate:
-      new Date().toISOString()
+      new Date()
+        .toISOString()
   },
 
   weather: {
 
-    temp: "+5°C",
+    temp:
+      "+5°C",
 
-    condition: "Rain"
+    condition:
+      "Rain"
   }
 }
 
@@ -100,7 +113,8 @@ app.get("/", (req, res) => {
 
   res.json({
 
-    status: "online",
+    status:
+      "online",
 
     service:
       "motorsport-live-hub"
@@ -118,41 +132,28 @@ app.get("/grello", (req, res) => {
 })
 
 app.get(
-
   "/series",
-
   (req, res) => {
 
     res.json(
-
       raceState.seriesData || []
-
     )
-
   }
-
 )
 
 app.get(
-
   "/cars",
-
   (req, res) => {
 
     res.json({
 
       leader:
-
         raceState.leader,
 
       grello:
-
         raceState.grello
-
     })
-
   }
-
 )
 
 // ==========================================
@@ -164,89 +165,80 @@ async function updateLoop() {
   try {
 
     const allSeries =
-
       await raceHub.collectAllSeries()
 
     if (
-
       !allSeries.length
-
     ) {
 
       return
-
     }
 
-    // --------------------------------------
-
+    // =====================================
     // NLS / 24H
-
-    // --------------------------------------
+    // =====================================
 
     const nls =
-
       allSeries[0]
 
-    // --------------------------------------
-
+    // =====================================
     // WEATHER
-
-    // --------------------------------------
+    // =====================================
 
     const weather =
-
-      await weatherService.getWeather()
+      await weatherService
+        .getWeather()
 
     raceState.weather =
-
       weather
 
-    // --------------------------------------
+    // =====================================
+    // EVENT STATE
+    // =====================================
 
+    const eventState =
+      getEventState()
+
+    raceState.mode =
+      eventState.mode
+
+    raceState.nextEvent =
+      eventState.nextEvent || null
+
+    raceState.countdown =
+      eventState.countdown || null
+
+    // =====================================
     // MAIN OUTPUT
-
-    // --------------------------------------
+    // =====================================
 
     raceState.series =
-
       nls.series
 
     raceState.session =
-
       nls.session
 
     raceState.leader =
-
       nls.leader
 
     raceState.grello =
-
       nls.grello
 
     raceState.lastUpdate =
-
       new Date()
-
         .toISOString()
 
     console.log(
-
-      "🏁 LIVE timing updated"
-
+      `🏁 LIVE updated (${raceState.mode})`
     )
 
   } catch (err) {
 
     console.log(
-
       "❌ Update failed",
-
       err.message
-
     )
-
   }
-
 }
 
 // ==========================================
@@ -255,22 +247,19 @@ async function updateLoop() {
 
 connectLiveTiming(raceState)
 
+// Erste Ausführung direkt
+
 updateLoop()
 
+// Danach alle 30 Sekunden
+
 setInterval(
 
   updateLoop,
 
-  1000 * 60 * 3
-
-)
-
-setInterval(
-  updateLoop,
   30000
-)
 
-updateLoop()
+)
 
 app.listen(PORT, () => {
 
