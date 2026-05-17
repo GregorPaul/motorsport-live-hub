@@ -3,7 +3,6 @@ const {
 } = require(
   "./services/timing/liveTimingSocket"
 )
-``
 
 const express = require("express")
 const cors = require("cors")
@@ -238,6 +237,8 @@ async function updateLoop() {
 // ==========================================
 // START
 // ==========================================
+
+connectLiveTiming(raceState)
 
 app.listen(PORT, () => {
 
