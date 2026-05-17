@@ -96,6 +96,44 @@ app.get("/grello", (req, res) => {
   res.json(raceState.grello)
 })
 
+app.get(
+
+  "/series",
+
+  (req, res) => {
+
+    res.json(
+
+      raceState.seriesData || []
+
+    )
+
+  }
+
+)
+
+app.get(
+
+  "/cars",
+
+  (req, res) => {
+
+    res.json({
+
+      leader:
+
+        raceState.leader,
+
+      grello:
+
+        raceState.grello
+
+    })
+
+  }
+
+)
+
 // ==========================================
 // UPDATE LOOP
 // ==========================================
@@ -104,58 +142,91 @@ async function updateLoop() {
 
   try {
 
+    const allSeries =
+
+      await raceHub.collectAllSeries()
+
+    if (
+
+      !allSeries.length
+
+    ) {
+
+      return
+
+    }
+
     // --------------------------------------
+
+    // NLS / 24H
+
+    // --------------------------------------
+
+    const nls =
+
+      allSeries[0]
+
+    // --------------------------------------
+
     // WEATHER
+
     // --------------------------------------
 
     const weather =
+
       await weatherService.getWeather()
 
-    if (weather) {
+    raceState.weather =
 
-      raceState.weather = weather
-    }
+      weather
 
     // --------------------------------------
-    // TIMING
+
+    // MAIN OUTPUT
+
     // --------------------------------------
 
-    const timing =
-      await timingService.getTiming()
+    raceState.series =
 
-    if (timing) {
+      nls.series
 
-      raceState = {
-        ...raceState,
-        ...timing
-      }
+    raceState.session =
 
-      raceState.leaderShort =
-        shortenTeamName(
-          raceState.leader,
-          24
-        )
-    }
+      nls.session
+
+    raceState.leader =
+
+      nls.leader
+
+    raceState.grello =
+
+      nls.grello
+
+    raceState.lastUpdate =
+
+      new Date()
+
+        .toISOString()
 
     console.log(
-      "🏁 Timing updated"
+
+      "🏁 LIVE timing updated"
+
     )
 
   } catch (err) {
 
     console.log(
+
       "❌ Update failed",
+
       err.message
+
     )
+
   }
+
 }
-
-updateLoop()
-
-setInterval(
-  updateLoop,
-  30000
-)
 
 // ==========================================
 // START
